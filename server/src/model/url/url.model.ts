@@ -21,7 +21,7 @@ const UrlSchema = new Schema<IUrl>({
         type: Number,
         default: 0,
     },
-    expireAt: {
+    expiresAt: {
         type: Date,
         default: null,
     }

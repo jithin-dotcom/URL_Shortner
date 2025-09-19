@@ -7,5 +7,5 @@ export interface IUrl extends Document{
     originalUrl: string;
     shortCode: string;
     visits: number;
-    expireAt?: Date|null;
+    expiresAt?: Date|null;
 }

@@ -1,24 +1,38 @@
 
 
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { connectDB } from "./config/db";
 import logger from "./utils/logger";
 import requestLogger from "./middleware/request.middleware";
+import { errorHandler } from "./middleware/error.middleware";
+import AuthRouter from "../src/routes/auth.routes";
+// import UrlRouter from "../src/routes/url.routes";
+import { apiRouter, redirectRouter } from "./routes/url.routes";
 
-dotenv.config();
+
+
 
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL, 
+  credentials: true
+}));
 app.use(express.json());
 app.use(requestLogger);
+app.use("/api", AuthRouter);
+// app.use("/api", UrlRouter);
+app.use("/api", apiRouter); 
+app.use("/", redirectRouter); 
 
-
-const PORT = process.env.PORT || 6000;
+app.use(errorHandler);
+const PORT = process.env.PORT || 5500;
 const MONGO_URI = process.env.MONGO_URI || "";
 
 

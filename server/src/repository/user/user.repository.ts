@@ -17,4 +17,8 @@ export class UserRepository implements IUserRepository{
     async findById(id: string): Promise<IUser | null> {
         return await UserModel.findById(id).exec();
     }
+
+    async saveRefreshToken(userId: string, refreshToken: string | null): Promise<void>{
+        await UserModel.findByIdAndUpdate(userId, {refreshToken});
+    }
 }

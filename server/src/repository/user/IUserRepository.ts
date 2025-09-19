@@ -6,4 +6,5 @@ export interface IUserRepository{
    create(user: Partial<IUser>): Promise<IUser>;
    findByEmail(email: string): Promise<IUser | null>;
    findById(id: string): Promise<IUser | null>;
+   saveRefreshToken(userId: string, refreshToken: string | null): Promise<void>;
 }
