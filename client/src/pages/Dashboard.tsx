@@ -375,6 +375,7 @@ export default function Dashboard() {
     setIsLoading(true);
     try {
       const res = await api.get('/urls');
+      console.log("data : ", res.data);
       setList(res.data);
     } catch (err) {
       console.error('Failed to fetch URLs:', err);
@@ -449,7 +450,8 @@ export default function Dashboard() {
   const averageClicks = list.length > 0 ? Math.round(totalClicks / list.length) : 0;
 
   function copyToClipboard(text: string) {
-    navigator.clipboard.writeText(`http://localhost:5500/${text}`);
+    // navigator.clipboard.writeText(`http://localhost:5500/${text}`);
+    navigator.clipboard.writeText(`${import.meta.env.VITE_BACKEND_URL}/${text}`);
     toast.success('URL copied to clipboard');
   }
 
@@ -459,6 +461,17 @@ export default function Dashboard() {
       day: 'numeric',
       year: 'numeric'
     });
+  }
+
+  function handleVisit(shortCode: string, id: string){
+      // window.open(`http://localhost:5500/${shortCode}`, "_blank");
+      window.open(`${import.meta.env.VITE_BACKEND_URL}/${shortCode}`, "_blank");
+
+      setList(prev => 
+        prev.map(url=>
+           url._id === id ? {...url, visits: url.visits+1} : url
+        )
+      )
   }
 
   return (
@@ -684,7 +697,8 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <button
-                        onClick={() => window.open(`http://localhost:5500/${url.shortCode}`, '_blank')}
+                        // onClick={() => window.open(`http://localhost:5500/${url.shortCode}`, '_blank')}
+                        onClick={() => handleVisit(url.shortCode, url._id)}
                         className="p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200"
                         title="Visit URL"
                       >
