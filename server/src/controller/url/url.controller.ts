@@ -2,7 +2,6 @@
 
 import { Request, Response, NextFunction } from 'express';
 import IUrlService from '../../services/url/IUrlServices';
-import mongoose from 'mongoose';
 import { IUrlController } from './IUrlController';
 
 export class UrlController implements IUrlController{

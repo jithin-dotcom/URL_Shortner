@@ -1,6 +1,5 @@
 
 
-// import { IUrl } from "../../model/url/IUrlModel";
 import { UrlDTO } from "../../mapper/IUrlDTO";
 
 export default interface IUrlService {

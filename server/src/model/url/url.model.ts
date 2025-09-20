@@ -1,6 +1,6 @@
 
 
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { IUrl } from "./IUrlModel";
 
 const UrlSchema = new Schema<IUrl>({

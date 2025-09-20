@@ -1,63 +1,3 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-
-
-
-
-
-// import { Outlet } from 'react-router-dom'
-
-// function App(){
-//   return (
-//     <div style={{padding:20}}>
-//       <div style={{maxWidth:800, margin:'0 auto'}}>
-//         <h1>URL Shortener</h1>
-//         <Outlet />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default App
-
-
-
-
-
 
 
 import { Outlet } from 'react-router-dom';
@@ -65,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 function App() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+     
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
@@ -83,7 +23,6 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>

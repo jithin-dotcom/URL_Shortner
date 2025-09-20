@@ -66,7 +66,6 @@ export class AuthService implements IAuthService {
 
             const accessToken = generateAccessToken((user._id as mongoose.Types.ObjectId).toString());
             const refreshToken = generateRefreshToken((user._id as mongoose.Types.ObjectId).toString());
-            console.log("refreshToken : ", refreshToken);
 
             const refreshExp = parseInt(process.env.JWT_REFRESH_EXPIRES || "7") * 24 * 60 * 60;
             await saveRefreshToken((user._id as mongoose.Types.ObjectId).toString(), refreshToken, refreshExp);

@@ -11,19 +11,10 @@ const urlRepository = new UrlRepository();
 const urlService = new UrlService(urlRepository);
 const urlController = new UrlController(urlService);
 
-// router.post("/urls", authMiddleware, urlController.create.bind(urlController));
-// router.get("/urls", authMiddleware, urlController.list.bind(urlController));
-// router.get("/:code", urlController.redirect.bind(urlController));
-
-
-// export default router;
-
 
 const apiRouter = Router();
 apiRouter.post("/urls", authMiddleware, urlController.create.bind(urlController));
 apiRouter.get("/urls", authMiddleware, urlController.list.bind(urlController));
-
-
 
 const redirectRouter = Router();
 redirectRouter.get("/:code", urlController.redirect.bind(urlController));

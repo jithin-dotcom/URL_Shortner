@@ -18,7 +18,6 @@ export class AuthController {
         password
       );
 
-      console.log("contr ref tkn : ", refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -42,7 +41,6 @@ export class AuthController {
         password
       );
 
-      console.log("contr ref tkn : ", refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -62,18 +60,14 @@ export class AuthController {
   async refresh(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
       const refreshToken = req.cookies?.refreshToken;
-      console.log("refreshToken : ",refreshToken);
       
       if (!refreshToken) {
          res.status(401).json({ message: "No refresh token" });
          return;
       }
 
-
-      const { accessToken, refreshToken: newRefreshToken } =
-        await this._authService.refreshToken(refreshToken);
-
-      
+      const { accessToken, refreshToken: newRefreshToken } = await this._authService.refreshToken(refreshToken);
+  
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -106,8 +100,7 @@ export class AuthController {
   };
 
 
-
-
+  
   async me(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
       const userId = (req as any).userId;

@@ -2,7 +2,6 @@
 
 import { IUrlRepository } from "../../repository/url/IUrlRepository";
 import IUrlService from "./IUrlServices";
-import { IUrl } from "../../model/url/IUrlModel";
 import generateShortCode from "../../utils/generateShotCode";
 import { HttpError } from "../../utils/HttpError";
 import { mapToDTO } from "../../mapper/UrlDTOMapper";
@@ -37,46 +36,46 @@ export class UrlService implements IUrlService{
     }
 
 
-async getByShortCode(code: string): Promise<UrlDTO | null> {
-  try {
-    const url = await this._urlRepo.findByShortCode(code);
+    async getByShortCode(code: string): Promise<UrlDTO | null> {
+      try {
+        const url = await this._urlRepo.findByShortCode(code);
 
-    if (!url) {
-      throw new HttpError("URL not found", 404);
+        if (!url) {
+          throw new HttpError("URL not found", 404);
+        }
+
+        if (url.expiresAt && new Date() > new Date(url.expiresAt)) {
+          throw new HttpError("URL has expired", 410);
+        }
+
+        return mapToDTO(url);
+      } catch (error) {
+        if (error instanceof HttpError) throw error;
+        throw new HttpError(`Failed to fetch URL`, 500);
+      }
     }
 
-    if (url.expiresAt && new Date() > new Date(url.expiresAt)) {
-      throw new HttpError("URL has expired", 410);
+
+
+    async listByOwner(ownerId: string): Promise<UrlDTO[]> {
+      try {
+        const urls = await this._urlRepo.findByOwner(ownerId);
+        return urls.map(mapToDTO); 
+      } catch (error) {
+        if (error instanceof HttpError) throw error;
+        else{
+            throw new HttpError(`Failed to fetch URLs for owner:`, 500);
+        } 
+      }
     }
 
-    return mapToDTO(url);
-  } catch (error) {
-    if (error instanceof HttpError) throw error;
-    throw new HttpError(`Failed to fetch URL`, 500);
-  }
-}
 
-
-
-async listByOwner(ownerId: string): Promise<UrlDTO[]> {
-  try {
-    const urls = await this._urlRepo.findByOwner(ownerId);
-    return urls.map(mapToDTO); 
-  } catch (error) {
-    if (error instanceof HttpError) throw error;
-    else{
-        throw new HttpError(`Failed to fetch URLs for owner:`, 500);
-    } 
-  }
-}
-
-
-async incrementVisits(urlId: string): Promise<void> {
-  try {
-    await this._urlRepo.incrementVisits(urlId);
-  } catch (err) {
-    throw new HttpError('Failed to increment visits', 500);
-  }
-}
+    async incrementVisits(urlId: string): Promise<void> {
+      try {
+        await this._urlRepo.incrementVisits(urlId);
+      } catch (err) {
+        throw new HttpError('Failed to increment visits', 500);
+      }
+    }
 
 }
