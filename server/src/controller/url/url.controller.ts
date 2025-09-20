@@ -62,7 +62,7 @@ export class UrlController implements IUrlController{
          return;
       }
 
-      await this._urlService.incrementVisits((url._id as mongoose.Types.ObjectId).toString());
+      await this._urlService.incrementVisits(url._id);
 
       return res.redirect(url.originalUrl);
     } catch (err) {
