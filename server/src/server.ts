@@ -11,7 +11,7 @@ import { connectDB } from "./config/db";
 import logger from "./utils/logger";
 import requestLogger from "./middleware/request.middleware";
 import { errorHandler } from "./middleware/error.middleware";
-import AuthRouter from "../src/routes/auth.routes";
+import AuthRouter from "./routes/auth.routes";
 // import UrlRouter from "../src/routes/url.routes";
 import { apiRouter, redirectRouter } from "./routes/url.routes";
 
