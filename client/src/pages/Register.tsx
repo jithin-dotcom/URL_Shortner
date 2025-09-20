@@ -178,9 +178,25 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {login} = useAuth();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+  const nameRegex = /^[A-Za-z]{3,}$/;
+
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+        if(!emailRegex.test(email)){
+      toast.error("Please enter a valid Email");
+      return;
+    }
+    if(!passwordRegex.test(password)){
+      toast.error("Password should be 5 letter long with at least one alphabet and one number");
+      return;
+    }
+    if(!nameRegex.test(name)){
+      toast.error("Name can only have alphabet with at least 3 letter long");
+      return;
+    }
     setIsLoading(true);
     try {
       const res = await api.post('/auth/register', { name, email, password });
@@ -202,7 +218,7 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4" >
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
@@ -216,7 +232,7 @@ export default function Register() {
         </div>
 
         {/* Form */}
-        <form onSubmit={submit} className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <form onSubmit={submit} noValidate className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           <div className="space-y-6">
             {/* Name Input */}
             <div>

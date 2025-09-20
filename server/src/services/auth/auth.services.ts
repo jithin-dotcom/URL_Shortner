@@ -17,12 +17,18 @@ export class AuthService implements IAuthService {
     async register(name: string, email: string, password: string): Promise<{ user: Partial<IUser>; accessToken: string; refreshToken: string}> {
         try {
             if(!name || !email || !password){
-                // throw new Error("Required fields missing");
-                throw new HttpError("Email already exists, please use another email", 409);
+                throw new HttpError("Required fields are missing", 400);
             }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+            const nameRegex = /^[A-Za-z]{3,}$/;
+            if(!nameRegex.test(name) || !emailRegex.test(email) || passwordRegex.test(password)){
+                throw new HttpError("Name, Email or Password are not in Valid Format",400);
+            }
+
             const existing = await this._userRepo.findByEmail(email);
             if(existing){
-                throw new Error("Email already Exists, Please usee another Email");
+                throw new HttpError("Email already Exists, Please usee another Email", 409);
             }
  
             const passwordHash = await bcrypt.hash(password, 12);
@@ -48,17 +54,14 @@ export class AuthService implements IAuthService {
     async login(email: string, password: string): Promise<{ user: Partial<IUser>; accessToken: string; refreshToken: string}> {
         try {
             if(!email || !password){
-                // throw new Error("Email or Password missing");
                 throw new HttpError("Email or password missing", 400);
             }
             const user = await this._userRepo.findByEmail(email);
             if(!user){
-                // throw new Error("Invalid credentials");
                 throw new HttpError("Invalid credentials", 401);
             }
             const ok = await bcrypt.compare(password, user.passwordHash);
             if(!ok){
-                // throw new Error("Invalid credentials");
                 throw new HttpError("Invalid credentials", 401);
             }
 

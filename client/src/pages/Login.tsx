@@ -209,8 +209,14 @@ export default function Login() {
   const navigate = useNavigate();
   const {login} = useAuth();
 
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if(!email.trim() || !password.trim()){
+       toast.error("Email and Password cannot be empty");
+       return;
+    }
+
     setIsLoading(true);
     try {
       const res = await api.post('/auth/login', { email, password });
@@ -249,7 +255,7 @@ export default function Login() {
         </div>
 
         {/* Form */}
-        <form onSubmit={submit} className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <form onSubmit={submit} noValidate className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           <div className="space-y-6">
             {/* Email Input */}
             <div>
