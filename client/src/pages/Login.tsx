@@ -197,7 +197,7 @@
 import React, { useState } from 'react';
 import api from '../api/apiClient'; 
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
+// import { AxiosError } from 'axios';
 import {toast} from "react-toastify";
 import { useAuth } from '../auth/useAuth';
 
@@ -229,11 +229,12 @@ export default function Login() {
       toast.success('Login successful!');
       navigate('/dashboard',{replace: true});
     } catch (err) {
-        if(err instanceof AxiosError){
-            toast.error(err.response?.data?.message || err.message);
-        }else{
-            toast.error("Failed to login");
-        }
+      console.error(err);
+        // if(err instanceof AxiosError){
+        //     // toast.error(err.response?.data?.message || err.message);
+        // }else{
+        //     toast.error("Failed to login");
+        // }
       
     } finally {
       setIsLoading(false);

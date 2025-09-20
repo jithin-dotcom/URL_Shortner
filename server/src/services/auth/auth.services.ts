@@ -20,9 +20,8 @@ export class AuthService implements IAuthService {
                 throw new HttpError("Required fields are missing", 400);
             }
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
             const nameRegex = /^[A-Za-z]{3,}$/;
-            if(!nameRegex.test(name) || !emailRegex.test(email) || passwordRegex.test(password)){
+            if(!nameRegex.test(name) || !emailRegex.test(email) || password.length < 5){
                 throw new HttpError("Name, Email or Password are not in Valid Format",400);
             }
 

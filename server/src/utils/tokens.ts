@@ -7,7 +7,7 @@ export function generateAccessToken(userId: string): string {
     { id: userId },
     process.env.JWT_ACCESS_SECRET || 'secret',
     {
-      expiresIn: process.env.JWT_EXPIRES || '5h', 
+      expiresIn: process.env.JWT_EXPIRES || '10s', 
     } as SignOptions
   );
 }
