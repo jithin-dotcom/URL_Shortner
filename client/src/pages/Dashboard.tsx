@@ -371,6 +371,10 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); 
+
+
   async function fetchList() {
     setIsLoading(true);
     try {
@@ -445,6 +449,18 @@ export default function Dashboard() {
         return 0;
     }
   });
+
+
+  // After sorting/filtering
+const paginatedUrls = sortedUrls.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
+
+const totalPages = Math.ceil(sortedUrls.length / itemsPerPage);
+
+
+
 
   const totalClicks = list.reduce((sum, url) => sum + url.visits, 0);
   const averageClicks = list.length > 0 ? Math.round(totalClicks / list.length) : 0;
@@ -652,7 +668,7 @@ export default function Dashboard() {
                 </p>
               </div>
             ) : (
-              sortedUrls.map((url, index) => (
+              paginatedUrls.map((url, index) => (
                 <div key={url._id} className="p-6 hover:bg-gray-50 transition-colors duration-200">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
@@ -712,6 +728,35 @@ export default function Dashboard() {
               ))
             )}
           </div>
+
+          <div className="flex justify-center items-center mt-4 space-x-2">
+  <button
+    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+    disabled={currentPage === 1}
+    className="px-3 py-1 border rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+    <button
+      key={page}
+      onClick={() => setCurrentPage(page)}
+      className={`px-3 py-1 border rounded ${page === currentPage ? 'bg-blue-600 text-white' : ''}`}
+    >
+      {page}
+    </button>
+  ))}
+
+  <button
+    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+    disabled={currentPage === totalPages}
+    className="px-3 py-1 border rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
+
         </div>
       </div>
     </div>

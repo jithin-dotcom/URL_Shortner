@@ -5,6 +5,8 @@ import IUrlService from "./IUrlServices";
 import { IUrl } from "../../model/url/IUrlModel";
 import generateShortCode from "../../utils/generateShotCode";
 import { HttpError } from "../../utils/HttpError";
+import { mapToDTO } from "../../mapper/UrlDTOMapper";
+import { UrlDTO } from "../../mapper/IUrlDTO";
 
 
 export class UrlService implements IUrlService{
@@ -12,7 +14,7 @@ export class UrlService implements IUrlService{
     constructor( private _urlRepo: IUrlRepository){};
 
 
-    async createShortUrl(ownerId: string, originalUrl: string, expiresAt?: Date | null): Promise<IUrl> {
+    async createShortUrl(ownerId: string, originalUrl: string, expiresAt?: Date | null): Promise<UrlDTO> {
         try {
             const valid = new URL(originalUrl);
             if(!valid){
@@ -28,14 +30,14 @@ export class UrlService implements IUrlService{
                 }
             }
             const url = await this._urlRepo.create({ owner: ownerId  , originalUrl, shortCode: code, expiresAt: expiresAt || null } as any);
-            return url;
+            return mapToDTO(url);
         } catch (error) {
             throw error;
         }
     }
 
 
-async getByShortCode(code: string) {
+async getByShortCode(code: string): Promise<UrlDTO | null> {
   try {
     const url = await this._urlRepo.findByShortCode(code);
 
@@ -47,7 +49,7 @@ async getByShortCode(code: string) {
       throw new HttpError("URL has expired", 410);
     }
 
-    return url;
+    return mapToDTO(url);
   } catch (error) {
     if (error instanceof HttpError) throw error;
     throw new HttpError(`Failed to fetch URL`, 500);
@@ -56,10 +58,10 @@ async getByShortCode(code: string) {
 
 
 
-async listByOwner(ownerId: string): Promise<IUrl[]> {
+async listByOwner(ownerId: string): Promise<UrlDTO[]> {
   try {
     const urls = await this._urlRepo.findByOwner(ownerId);
-    return urls; 
+    return urls.map(mapToDTO); 
   } catch (error) {
     if (error instanceof HttpError) throw error;
     else{
@@ -68,7 +70,7 @@ async listByOwner(ownerId: string): Promise<IUrl[]> {
   }
 }
 
-// In UrlService
+
 async incrementVisits(urlId: string): Promise<void> {
   try {
     await this._urlRepo.incrementVisits(urlId);

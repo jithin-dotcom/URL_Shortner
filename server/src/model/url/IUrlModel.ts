@@ -8,4 +8,5 @@ export interface IUrl extends Document{
     shortCode: string;
     visits: number;
     expiresAt?: Date|null;
+    createdAt: Date;
 }
