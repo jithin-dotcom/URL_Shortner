@@ -6,6 +6,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db";
 import logger from "./utils/logger";
 import requestLogger from "./middleware/request.middleware";
@@ -20,6 +21,7 @@ import { apiRouter, redirectRouter } from "./routes/url.routes";
 const app = express();
 
 app.use(helmet());
+app.use(cookieParser());
 app.use(cors({
   origin: process.env.FRONTEND_URL, 
   credentials: true

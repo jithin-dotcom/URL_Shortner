@@ -18,7 +18,7 @@ export class AuthController {
         password
       );
 
-      
+      console.log("contr ref tkn : ", refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -42,6 +42,7 @@ export class AuthController {
         password
       );
 
+      console.log("contr ref tkn : ", refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -60,9 +61,9 @@ export class AuthController {
 
   async refresh(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
-    //   const refreshToken = req.cookies?.refreshToken;
-    //   console.log("refreshToken : ",refreshToken);
-      const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Y2JlMzdlY2MzZGY2MDVlMTgwNDllMiIsImlhdCI6MTc1ODI4MjA5MiwiZXhwIjoxNzU4ODg2ODkyfQ.7qJvV-I1cg-osfqF0sBuc0svDFGPEUjeZ_8Hbk2MczA"
+      const refreshToken = req.cookies?.refreshToken;
+      console.log("refreshToken : ",refreshToken);
+      
       if (!refreshToken) {
          res.status(401).json({ message: "No refresh token" });
          return;
@@ -91,8 +92,8 @@ export class AuthController {
 
   async logout(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
-    //   const refreshToken = req.cookies?.refreshToken;
-    const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Y2Q0MWUwOTllY2JiNTU5NjNmYzc2NyIsImlhdCI6MTc1ODI4MjQ3NiwiZXhwIjoxNzU4ODg3Mjc2fQ.suqLVgw8Xw9W1sWxxlyNbb87IyHF1UOYcaFxdm-PLe4" 
+            
+      const refreshToken = req.cookies?.refreshToken;
       if (refreshToken) {
         await this._authService.logout(refreshToken);
       }
